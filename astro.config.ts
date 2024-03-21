@@ -20,6 +20,6 @@ export default defineConfig({
     })],
     vite: {
         // I tried this but it didn't work
-        // envPrefix: "ASTRO_",
+        // envPrefix: "PUBLIC_",
     }
 });
