@@ -1,0 +1,51 @@
+---
+
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1>Astro + VitePWA and Custom Service Worker</h1>
+		<p>See in the console</p>
+
+		<script>
+			import {
+				ASTRO_TEST_IMPORT,
+				VITE_TEST_IMPORT,
+				SERVICE_WORKER_PATH,
+			} from "../values";
+
+			console.log(
+				`Common script (Non-SW): VITE_TEST: ${VITE_TEST_IMPORT}, ASTRO_TEST: ${ASTRO_TEST_IMPORT}`,
+			);
+
+			// Register the service worker.
+			if ("serviceWorker" in navigator) {
+				const registration = await navigator.serviceWorker.register(
+					SERVICE_WORKER_PATH,
+					{
+						type: import.meta.env.DEV ? "module" : "classic",
+					},
+				);
+				// Send a push message to the service worker.
+				if (registration.active) {
+					registration.active.postMessage(
+						"Hello from the main thread!",
+					);
+				} else {
+					console.log(
+						"Service worker not ready yet. Reload the page and try again.",
+					);
+				}
+			} else {
+				console.log("Service worker not supported");
+			}
+		</script>
+	</body>
+</html>
